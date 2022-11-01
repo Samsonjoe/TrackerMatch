@@ -1,6 +1,6 @@
 # TrackerMatch
 
-The app tracks the match between random generated numbers and the users input.
+The app tracks the match between random generated numbers and the user's input.
 
 To run the application, there are two ways
 
