@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Tracker Match</string>
+    <string name="random_number_between_0_and_10">Random Number (Between 0 and 10)</string>
+    <string name="random_number_generator">Random Number Generator</string>
+    <string name="kindly_note_green_is_match_and_red_is_not_a_match">Kindly note that green means the random number generated and the input value you entered match and red means it was not a match.</string>
+    <string name="input_number">Input Number</string>
+    <string name="random_number_generated">Random Number Generated</string>
+</resources>
