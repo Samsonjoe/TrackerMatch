@@ -17,13 +17,13 @@
         android:gravity="center">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="5dp"
-            android:hint="@string/random_number_between_0_and_10"
             app:boxBackgroundColor="@color/white"
             app:counterMaxLength="20"
             app:hintTextColor="@color/black">
@@ -152,6 +152,16 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tvMatchSameValue"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/company_color" />
 
     </LinearLayout>
 

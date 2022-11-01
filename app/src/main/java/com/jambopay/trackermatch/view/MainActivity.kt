@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var cartList: ArrayList<Model>? = null
+    var modelList: ArrayList<Model>? = null
 
     // will return an `Int` between 0 and 10 included
     // to increase add the number to the value you want to be maximum as well as minimum
@@ -33,28 +33,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Ensures hint is updated instantly to the new set values for minimum and maximum number values
+        textInputLayout.hint = "Random Number (Between $minNumber and $maxNumber)"
+
         var milliSeconds: Long = 0
 
+        // Shared preference for storing last match in milliseconds value
         val sharedPreference =  getSharedPreferences(keySharedPreference, Context.MODE_PRIVATE)
         var longLastMatch: Long = sharedPreference.getLong(keyLastMatchMilliSeconds, milliSeconds)
 
+        // Shared preference for storing Model list items
         val prefs = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
         val json: String? = prefs.getString("matchList", null)
 
-        Log.e(TAG, "JSON: $json")
-
-        //START
-        cartList = ArrayList()
+        // To get Model values previously stored
+        modelList = ArrayList()
 
         if (json != null) {
 
-            cartList = getArrayList("matchList",this@MainActivity)
+            modelList = getArrayList("matchList",this@MainActivity)
 
-            Log.e(TAG, "ALL LIST: $cartList")
+            Log.e(TAG, "ALL LIST: $modelList")
         }
 
         //END
 
+        //On click in attempt to match generated value and input value
         btnSubmitInput.setOnClickListener {
 
             if(checkInputValue()) {
@@ -66,6 +70,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //Function called if input value check returns true
     private fun randomGeneratorButtonClicked( longLastMatch:Long) {
 
         //Generates a random number in the set minimum and maximum limits
@@ -102,8 +107,6 @@ class MainActivity : AppCompatActivity() {
             editor.putLong(keyLastMatchMilliSeconds,firstMatchTime)
             editor.commit()
 
- //           Log.e(ContentValues.TAG, "onCreate: Millisecond differences $firstMatchTime")
-
             val inputNumberValue = etNumberInput.text.toString()
             val randomNumberValue = randomNumber.toString()
 
@@ -119,17 +122,41 @@ class MainActivity : AppCompatActivity() {
                 tvGeneratedRandomNumber.setBackgroundColor(Color.parseColor("#F40404"))
             }
 
-            if (cartList != null ) {
+            if (modelList != null ) {
 
-                val trials = cartList?.size
+                val trials = modelList?.size
 
                 tvTrials.text = "Total match attempts: $trials"
 
+                var numberOfMatches: Int = 1
 
+                // Loops through the list and updates to the last recent time the same input and random generated values matched
+                for (i in modelList!!.indices) {
+                    val myObject = modelList!![i]
+
+                    val randomNumberValueSaved: String = myObject.randomNumber
+                    val inputValueNumberSaved: String = myObject.inputNumber
+
+                    //Checks if all the values both from saved and now match to calculate their milliseconds difference
+                    if (inputNumberValue == randomNumberValue &&
+                        randomNumberValueSaved == inputValueNumberSaved &&
+                        inputValueNumberSaved == inputNumberValue) {
+
+                        var timesMatched = numberOfMatches++
+
+                        val savedDataMatchTimeInMilliseconds = myObject.timeMatchMilliseconds
+
+                        val valueMilliMatch = firstMatchTime - savedDataMatchTimeInMilliseconds.toLong()
+
+                        tvMatchSameValue.text = "The last recent time the value $inputNumberValue matched was $valueMilliMatch Milliseconds ago." +
+                                " The $inputNumberValue value has matched $timesMatched times."
+                    }
+
+                }
             }
 
-            cartList?.add(Model(inputNumberValue,randomNumberValue,firstMatchTime.toString(),keyLastMatchMilliSeconds))
-            saveArrayList(cartList,"matchList",this@MainActivity)
+            modelList?.add(Model(inputNumberValue,randomNumberValue,firstMatchTime.toString(),keyLastMatchMilliSeconds))
+            saveArrayList(modelList,"matchList",this@MainActivity)
 
 
         } else {
