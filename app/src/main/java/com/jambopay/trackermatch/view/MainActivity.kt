@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
 
             if (modelList != null ) {
 
-                val trials = modelList?.size
+                val trials = modelList?.size?.plus(1)
 
                 tvTrials.text = "Total match attempts: $trials"
 
